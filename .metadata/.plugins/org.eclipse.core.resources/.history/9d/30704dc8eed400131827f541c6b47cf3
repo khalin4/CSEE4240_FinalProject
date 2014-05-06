@@ -1,0 +1,95 @@
+package sensornetworks;
+
+import java.io.IOException;
+import java.net.URI;
+import java.net.URLEncoder;
+
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.fluent.Request;
+import org.apache.http.client.utils.URIUtils;
+
+import com.rapplogic.xbee.api.ApiId;
+import com.rapplogic.xbee.api.XBee;
+import com.rapplogic.xbee.api.XBeeResponse;
+import com.rapplogic.xbee.api.zigbee.ZNetRxResponse;
+
+
+public class SensorGateway 
+{
+	XBee xbee = new XBee();
+
+	public SensorGateway() throws Exception
+	{
+		try {
+			xbee.open("COM6", 9600);
+			while (true) 
+			{
+				try {
+					// we wait here until a packet is received.
+					
+					XBeeResponse response = xbee.getResponse();
+					System.out.println("Connected. Waiting for a packet");
+					if (response.getApiId() == ApiId.ZNET_RX_RESPONSE) {
+						// we received a packet from ZNetSenderTest.java
+						ZNetRxResponse rx = (ZNetRxResponse) response;
+						System.out.println("got a packet");
+						System.out.println(rx.getRemoteAddress64());
+						
+						int[] data = rx.getData();
+						//System.out.println(data[0] + "," + data[1]);
+						int reading = data[0] | (data[1] << 8);
+						System.out.println(reading);
+						
+						String httpResponse = Request
+								.Get("http://sensornetworks.engr.uga.edu/sp14/examples/addMoteData.php?"+
+									  "password=penguin&"+
+										"sensor_value="+reading + "&"+
+									  "radio_address="+URLEncoder.encode(rx.getRemoteAddress64().toString(), "UTF-8"))
+								.execute().returnContent().asString();
+						System.out.println(httpResponse);
+					} else {
+
+					}
+				} catch (Exception e) {
+
+				}
+			}
+		} finally {
+			if (xbee.isConnected()) {
+				xbee.close();
+			}
+		}
+	}
+/*
+	public void sendDataToServer() {
+		try {
+			System.out.println("hello");
+			String response = Request
+					.Get("http://sensornetworks.engr.uga.edu/sp14/examples/getMoteData.php?mote_id=1")
+					.execute().returnContent().asString();
+			JsonParser parser = new JsonParser();
+			JsonElement f = parser.parse(response);
+			JsonObject j = f.getAsJsonObject();
+			System.out.println(j.get("success").getAsBoolean());
+
+		} catch (ClientProtocolException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.out.println("hello2");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.out.println("hello3");
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("hello4");
+		}
+
+	}
+	*/
+
+	public static void main(String[] args) throws Exception {
+
+		new SensorGateway();
+	}
+}

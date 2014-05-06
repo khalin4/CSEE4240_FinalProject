@@ -1,0 +1,5 @@
+package sensornetworks;
+
+public class SensorGateway {
+
+}
