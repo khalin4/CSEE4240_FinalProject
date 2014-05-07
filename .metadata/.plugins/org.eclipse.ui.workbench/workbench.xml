@@ -40,7 +40,7 @@
 </editorArea>
 <editor activePart="true" focus="true" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="SensorGateway.java" partName="SensorGateway.java" path="C:/Users/Jesus4/Documents/GitHub/CSEE4240_FinalProject/SensorGateway/src/sensornetworks/SensorGateway.java" title="SensorGateway.java" tooltip="SensorGateway/src/sensornetworks/SensorGateway.java" workbook="DefaultEditorWorkbook">
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/SensorGateway/src/sensornetworks/SensorGateway.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="552" selectionTopPixel="204"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="1235" selectionTopPixel="58"/>
 </editor>
 </editors>
 <views>
@@ -327,7 +327,7 @@
 </folder>
 </info>
 <info part="org.eclipse.ui.editorss" ratio="0.120661154" ratioLeft="146" ratioRight="1064" relationship="2" relative="left"/>
-<info folder="true" part="bottom" ratio="0.6792453" ratioLeft="432" ratioRight="204" relationship="4" relative="org.eclipse.ui.editorss">
+<info folder="true" part="bottom" ratio="0.5597484" ratioLeft="356" ratioRight="280" relationship="4" relative="org.eclipse.ui.editorss">
 <folder activePageID="org.eclipse.ui.console.ConsoleView" appearance="2" expanded="2">
 <page content="org.eclipse.ui.views.ProblemView" label="Problems"/>
 <page content="org.eclipse.jdt.ui.JavadocView" label="Javadoc"/>

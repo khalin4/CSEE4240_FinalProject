@@ -5,9 +5,13 @@
 
 SoftwareSerial xbee(2,3);
 
-unsigned int analogReading0 = 0;
-int Pin = 0;
-int temperature = 0;
+int supplyVoltage = 5; // 5V
+int analogPin = 0; // reading temp from pin A0
+int reading; // reading from analog pin
+float voltage; // reading convertered into voltage
+float tempC; // temperature in Celsius
+float tempF; // temperature in Fahrenheit
+int temp=0;
 unsigned long sensorTime = 5000; //how often to send data
 unsigned long sensorLast = 0;
 
@@ -63,11 +67,12 @@ void sendPacket()
   packet[14] = 0xFE;
   
   packet[15] = 0x00; //10 hops (maximum)
-  packet[16] = 0x00; //disable ack
+  packet[16] = 0x01; //disable ack
   
   //now comes the actual data
-  packet[17] = (temperature >> 8) & 0xFF; //MSB
-  packet[18] = (temperature >> 0) & 0xFF;  //LSB
+  Serial.println(temp);
+  packet[17] = (temp >> 8) & 0xFF; //MSB
+  packet[18] = (temp >> 0) & 0xFF;  //LSB
   
   
   //checksum
@@ -89,17 +94,28 @@ void sendPacket()
   }
 }
 
-float getVoltage(int pin)
-{
-  analogReading0 = analogRead(Pin);
-  return ((analogReading0) * 0.004882814);
-}
   
 void getSensorData()
 {
-   temperature = getVoltage(Pin); //gets voltage reading from temperature sensor
-   temperature  = (((temperature - .5) * 100)*1.8) + 32; //Converts from voltage to degrees Fahreneit
-   //Serial.print(temperature);
+   reading = analogRead(analogPin);
+  
+  // Convert reading into voltage
+  float voltage = (reading * supplyVoltage) / 1024.0;
+  
+  // Convert milliVolt reading to temp based on datasheet
+  // Scale factor 10 mV/C and 500 mV offset (750mV = 25C)
+  tempC = (voltage - 0.5) * 100;
+  tempF = (tempC * 9.0 / 5.0) + 32.0;
+  
+   temp = (int) tempF;
+  // Output values over Serial
+  Serial.print("Celsius: " );
+  Serial.println(tempC);
+  Serial.print("Fahrenheit: " );
+  Serial.println(tempF);
+  Serial.println(temp);
+  
+  delay(1000); // output once every second
 }
 
 void loop()

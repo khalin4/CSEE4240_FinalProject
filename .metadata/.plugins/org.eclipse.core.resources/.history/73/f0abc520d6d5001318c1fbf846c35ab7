@@ -38,8 +38,6 @@ public class SensorGateway
 						int[] data = rx.getData();
 						//System.out.println(data[0] + "," + data[1]);
 						int reading = data[1];
-						
-						
 						System.out.println(reading);
 						
 						String httpResponse = Request

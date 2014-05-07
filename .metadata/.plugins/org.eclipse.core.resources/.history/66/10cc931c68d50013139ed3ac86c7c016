@@ -21,7 +21,7 @@ public class SensorGateway
 	public SensorGateway() throws Exception
 	{
 		try {
-			xbee.open("COM9", 9600);
+			xbee.open("COM6", 9600);
 			while (true) 
 			{
 				try {
@@ -37,9 +37,7 @@ public class SensorGateway
 						
 						int[] data = rx.getData();
 						//System.out.println(data[0] + "," + data[1]);
-						int reading = data[1];
-						
-						
+						int reading = data[0] | (data[1] << 8);
 						System.out.println(reading);
 						
 						String httpResponse = Request

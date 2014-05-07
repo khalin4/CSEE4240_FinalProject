@@ -39,7 +39,9 @@ public class SensorGateway
 						//System.out.println(data[0] + "," + data[1]);
 						int reading = data[1];
 						
-						
+						for(int i=0; i<data.length; i++){
+							System.out.println(data[i]);
+						}
 						System.out.println(reading);
 						
 						String httpResponse = Request
